@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="te">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ayyappa Sharanu Ghosha</title>
+    <link rel="icon" type="image/png" href="ayyapa.jpeg" />
+
+    <style>
+        
+      :root {
+        --bg: #0f1724;
+        --card: #0b1220;
+        --accent: #f59e0b;
+        --text: #f8fafc;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto,
+          "Noto Sans Telugu", sans-serif;
+        background: linear-gradient(180deg, #071028 0%, #07192b 60%);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 24px;
+      }
+      .card {
+        width: 100%;
+        max-width: 720px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-radius: 14px;
+        padding: 28px;
+        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7);
+        position: relative;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        text-align: center;
+      }
+      p.subtitle {
+        margin: 0 0 18px;
+        text-align: center;
+        opacity: 0.85;
+      }
+      .display {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        text-align: center;
+        padding: 18px;
+        border-radius: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        position: relative;
+        color: rgb(76, 232, 76)
+      }
+      .fade {
+        transition: opacity 220ms ease, transform 220ms ease;
+      }
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 18px;
+        gap: 12px;
+      }
+      
+      button {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        padding: 10px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button.primary {
+        background: linear-gradient(90deg, var(--accent), #f97316);
+        color: #071022;
+        border: none;
+      }
+      .arrow {
+        font-size: 22px;
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+      .arrow:active {
+        transform: translateY(1px);
+      }
+      .index {
+        position: absolute;
+        right: 18px;
+        top: 18px;
+        font-size: 13px;
+        opacity: 0.85;
+      }
+      .footer {
+        margin-top: 16px;
+        text-align: center;
+        opacity: 0.8;
+        font-size: 13px;
+      }
+      @media (max-width: 560px) {
+        .display {
+          height: 160px;
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="card"
+      role="application"
+      aria-label="Ayyappa 108 Sharanu Ghosham"
+    >
+      <div class="index" id="index">0 / 108</div>
+      <h1>అయ్యప్ప శరణు ఘోష</h1>
+      <p class="subtitle" >
+        Start బటన్ నొక్కి శరణు గోషం చదవండి. ఎడమ/కుడి బాణాల ద్వారా ముందుకు
+        వెనుకకు వెళ్లండి.
+      </p>
+
+      <div class="display">
+        <div id="name" class="fade">ప్రెస్ Start ప్రారంభించడానికి</div>
+      </div>
+
+      <div class="controls" aria-hidden="false">
+        <button id="prev" class="arrow" title="Previous">◀</button>
+        <button id="start" class="primary">Start</button>
+        <button id="next" class="arrow" title="Next">▶</button>
+      </div>
+
+      <div class="footer">
+        కీబోర్డ్: ← ముందు, → తర్వాత, Space = ఆటో ప్లే/పజ్
+      </div>
+    </div>
+
+    <script>
+      // Telugu 108 names provided by the user (kept exactly as given)
+      const names = [
+        `ఓం శ్రీ స్వామినే శరణమయ్యప్ప`,
+        `హరి హర సుతనే శరణమయ్యప్ప`,
+        `ఆపద్భాందవనే శరణమయ్యప్ప`,
+        `అనాధరక్షకనే శరణమయ్యప్ప`,
+        `అఖిలాండ కోటి బ్రహ్మాండనాయకనే శరణమయ్యప్ప`,
+        `అన్నదాన ప్రభువే శరణమయ్యప్ప`,
+        `అయ్యప్పనే శరణమయ్యప్ప`,
+        `అరియాంగావు అయ్యావే శరణమయ్యప్ప`,
+        `ఆర్చన్ కోవిల్ అరనే శరణమయ్యప్ప`,
+        `కుళత్తపులై బాలకనే శరణమయ్యప్ప`,
+        `ఎరుమేలి శాస్తనే శరణమయ్యప్ప`,
+        `వావరుస్వామినే శరణమయ్యప్ప`,
+        `కన్నిమూల మహా గణపతియే శరణమయ్యప్ప`,
+        `నాగరాజవే శరణమయ్యప్ప`,
+        `మాలికాపురత్త దులోకదేవి శరణమయ్యప్ప మాతాయే`,
+        `కురుప్ప స్వామియే శరణమయ్యప్ప`,
+        `సేవిప్ప వర్కానంద మూర్తియే శరణమయ్యప్ప`,
+        `কাশివాసియే శరణమయ్యప్ప`,
+        `హరిద్వార నివాసియే శరణమయ్యప్ప`,
+        `శ్రీరంగపట్టణ వాసియే శరణమయ్యప్ప`,
+        `కరుప్పతూర్ వాసియే శరణమయ్యప్ప`,
+        `గొల్లపూడి [ద్వారపూడి] ధర్మశాస్తావే శరణమయ్యప్ప`,
+        `సద్గురు నాధనే శరణమయ్యప్ప`,
+        `విళాలి వీరనే శరణమయ్యప్ప`,
+        `వీరమణికంటనే శరణమయ్యప్ప`,
+        `ధర్మశాస్త్రవే శరణమయ్యప్ప`,
+        `శరణుగోషప్రియవే శరణమయ్యప్ప`,
+        `కాంతిమలై వాసనే శరణమయ్యప్ప`,
+        `పొన్నంబలవాసియే శరణమయ్యప్ప`,
+        `పందళశಿಶువే శరణమయ్యప్ప`,
+        `పందల రాజకుమారనే శరణమయ్యప్ప`,
+        `వావరిన్ తోళనే శరణమయ్యప్ప`,
+        `మోహినీసుతవే శరణమయ్యప్ప`,
+        `కన్కండ దైవమే శరణమయ్యప్ప`,
+        `కలియుగవరదనే శరణమయ్యప్ప`,
+        `సర్వరోగ నివారణ ధన్వంతర మూర్తియే శరణమయ్యప్ప`,
+        `మహిషిమర్దననే శరణమయ్యప్ప`,
+        `పూర్ణ పుష్కళ నాధనే శరణమయ్యప్ప`,
+        `వన్-పులి వాహననే శరణమయ్యప్ప`,
+        `బక్తవత్సలనే శరణమయ్యప్ప`,
+        `భూలోకనాధనే శరణమయ్యప్ప`,
+        `అయిందుమలైవాసవే శరణమయ్యప్ప`,
+        `శబరి గిరీశనే శరణమయ్యప్ప`,
+        `ఇరుముడి ప్రియనే శరణమయ్యప్ప`,
+        `అಭిషేకప్రియనే శరణమయ్యప్ప`,
+        `వేదప్పోరుళీనే శరణమయ్యప్ప`,
+        `నిత్య బ్రహ్మచారిణే శరణమయ్యప్ప`,
+        `సర్వ మంగళదాయకనే శరణమయ్యప్ప`,
+        `వీరాధివీరనే శరణమయ్యప్ప`,
+        `ఓంకారప్పోరుళే శరణమయ్యప్ప`,
+        `ఆనందరూపనే శరణమయ్యప్ప`,
+        `భక్త చిత్తాదివాసనే శరణమయ్యప్ప`,
+        `ఆశ్రిత-వత్సలనే శరణమయ్యప్ప`,
+        `భూత గణాదిపతయే శరణమయ్యప్ప`,
+        `శక్తి-రూపనే శరణమయ్యప్ప`,
+        `శాంతమూర్తయే శరణమయ్యప్ప`,
+        `పదునేల్బాబడిక్కి అధిపతియే శరణమయ్యప్ప`,
+        `కట్టాళ విషరామనే శరణమయ్యప్ప`,
+        `ఋషికుల రక్షకునే శరణమయ్యప్ప`,
+        `వేదప్రియనే శరణమయ్యప్ప`,
+        `ఉత్తరానక్షత్ర జాతకనే శరణమయ్యప్ప`,
+        `తపోధననే శరణమయ్యప్ప`,
+        `యంగళ కులదైవమే శరణమయ్యప్ప`,
+        `జగన్మోహనే శరణమయ్యప్ప`,
+        `మోహనరుపనే శరణమయ్యప్ప`,
+        `మాధవసుతనే శరణమయ్యప్ప`,
+        `యదుకులవీరనే శరణమయ్యప్ప`,
+        `మామలై వాసనే శరణమయ్యప్ప`,
+        `షణ్ముఖ-సోదరనే శరణమయ్యప్ప`,
+        `వేదాంతరూపనే శరణమయ్యప్ప`,
+        `శంకర సుతనే శరణమయ్యప్ప`,
+        `శత్రుసంహారినే శరణమయ్యప్ప`,
+        `సద్గుణమూర్తయే శరణమయ్యప్ప`,
+        `పరాశక్తియే శరణమయ్యప్ప`,
+        `పరాత్పరనే శరణమయ్యప్ప`,
+        `పరంజ్యోతియే శరణమయ్యప్ప`,
+        `హోమప్రియనే శరణమయ్యప్ప`,
+        `గణపతి సోదరనే శరణమయ్యప్ప`,
+        `భక్త విలోచనే శరణమయ్యప్ప`,
+        `విష్ణుసుతనే శరణమయ్యప్ప`,
+        `సకల-కళా వల్లభనే శరణమయ్యప్ప`,
+        `లోక రక్షకనే శరణమయ్యప్ప`,
+        `అమిత-గుణాకరనే శరణమయ్యప్ప`,
+        `అలంకార ప్రియనే శరణమయ్యప్ప`,
+        `కన్నిమారై-కప్పవనే శరణమయ్యప్ప`,
+        `భువనేశ్వరనే శరణమయ్యప్ప`,
+        `మాతాపితా గురుదైవమే శరణమయ్యప్ప`,
+        `స్వామియిన్ పుంగావనమే శరణమయ్యప్ప`,
+        `అళుదానదియే శరణమయ్యప్ప`,
+        `అళుదామేడే శరణమయ్యప్ప`,
+        `కళ్లిడ్రంకుండ్రే శరణమయ్యప్ప`,
+        `కరిమలై యేట్రమే శరణమయ్యప్ప`,
+        `కరిమలై యేరక్కమే శరణమయ్యప్ప`,
+        `పేరియాన్ వట్టమే శరణమయ్యప్ప`,
+        `చెరియాన వట్టమే శరణమయ్యప్ప`,
+        `పంబానదియే శరణమయ్యప్ప`,
+        `పంబయిళ్ వీళ్ళక్కే శరణమయ్యప్ప`,
+        `నీలిమలై యేట్రమే శరణమయ్యప్ప`,
+        `అప్పాచి మేడే శరణమయ్యప్ప`,
+        `శబరిపీటమే శరణమయ్యప్ప`,
+        `శరం గుత్తి ఆలే శరణమయ్యప్ప`,
+        `భస్మకుళమే శరణమయ్యప్ప`,
+        `పదునేట్టాం బడియే శరణమయ్యప్ప`,
+        `నెయ్యీభి షేకప్రియనే శరణమయ్యప్ప`,
+        `కర్పూర జ్యోతియే శరణమయ్యప్ప`,
+        `జ్యోతిస్వరూపనే శరణమయ్యప్ప`,
+        `మకర జ్యోతియే శరణమయ్యప్ప`,
+        `ఓం హరిహర సుతనే ఆనందచిత్తన్ అయ్యప్ప స్వామినే శరణమయ్యప్ప`,
+      ];
+
+      // fix: there are a few typos from the user's pasted text (like a Bengali word). We will NOT change them, keeping exactly as provided.
+
+      const nameEl = document.getElementById("name");
+      const idxEl = document.getElementById("index");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      const startBtn = document.getElementById("start");
+
+      let i = 0; // current index
+      let playing = false;
+      let timer = null;
+
+      function showIndex() {
+        idxEl.textContent = i + 1 + " / " + names.length;
+      }
+
+      function showName(newIndex, direction = 0) {
+        if (newIndex < 0) newIndex = names.length - 1;
+        if (newIndex >= names.length) newIndex = 0;
+        i = newIndex;
+        // simple fade animation
+        nameEl.style.opacity = 0;
+        nameEl.style.transform = `translateY(${direction > 0 ? 20 : -20}px)`;
+        setTimeout(() => {
+          nameEl.textContent = names[i];
+          nameEl.style.opacity = 1;
+          nameEl.style.transform = "translateY(0)";
+          showIndex();
+        }, 180);
+      }
+
+      function prev() {
+        showName(i - 1, -1);
+      }
+      function next() {
+        showName(i + 1, 1);
+      }
+
+      prevBtn.addEventListener("click", () => {
+        prev();
+        stopAuto();
+      });
+      nextBtn.addEventListener("click", () => {
+        next();
+        stopAuto();
+      });
+
+      startBtn.addEventListener("click", () => {
+        if (!startBtn.dataset.started) {
+          startBtn.dataset.started = "1";
+          startBtn.textContent = "Restart";
+          showName(0);
+          // focus for keyboard
+          document.body.focus();
+        } else {
+          // restart
+          showName(0);
+          stopAuto();
+        }
+      });
+
+      // keyboard controls
+      window.addEventListener("keydown", (e) => {
+        if (!startBtn.dataset.started) return;
+        if (e.key === "ArrowLeft") {
+          prev();
+          stopAuto();
+        }
+        if (e.key === "ArrowRight") {
+          next();
+          stopAuto();
+        }
+        if (e.code === "Space") {
+          e.preventDefault();
+          toggleAuto();
+        }
+      });
+
+      // autoplay: cycles every 2.5s
+      function autoStep() {
+        next();
+      }
+      function startAuto() {
+        if (playing) return;
+        playing = true;
+        timer = setInterval(autoStep, 2500);
+        startBtn.classList.add("playing");
+      }
+      function stopAuto() {
+        if (!playing) return;
+        playing = false;
+        clearInterval(timer);
+        timer = null;
+        startBtn.classList.remove("playing");
+      }
+      function toggleAuto() {
+        if (playing) stopAuto();
+        else startAuto();
+      }
+
+      // initialize UI
+      showIndex();
+
+      // Accessibility: focus controls
+      prevBtn.setAttribute("aria-label", "Previous name");
+      nextBtn.setAttribute("aria-label", "Next name");
+      startBtn.setAttribute("aria-label", "Start / Restart");
+    </script>
+  </body>
+</html>
